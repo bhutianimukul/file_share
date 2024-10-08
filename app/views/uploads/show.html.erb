@@ -1,0 +1,26 @@
+<%# app/views/files/show.html.erb %>
+<div class="container mt-5 pt-4">
+    <h1>File Details</h1>
+  
+    <p><strong>File Name:</strong> <%= @file.name %></p>
+    <p><strong>File Type:</strong> <%= @file.content_type %></p>
+    <p><strong>File Size:</strong> <%= @file.size %></p>
+    <p><strong>File Owner:</strong> <%= @file_owner.username %></p>
+  
+    <div class="file-content">
+      <% case @file.content_type %>
+      <% when 'text/plain' %>
+        <h2>File Content:</h2>
+        <pre><%= File.read(@file.file_path) %></pre>
+      <% when 'image/jpeg', 'image/png', 'image/gif' %>
+        <h2>Image Preview:</h2>
+        <div class="image-preview mb-4">
+            <%= image_tag @relative_file_path, class: "img-fluid img-thumbnail", alt: "Uploaded Image" %>
+          </div>
+      <% else %>
+        <p>File type not supported for preview.</p>
+        <%= link_to 'Download File', user_download_option_path(user_id: @file_owner.id, file_id: @file.id), class: 'btn btn-primary', download: true %>
+      <% end %>
+    </div>
+  </div>
+  
